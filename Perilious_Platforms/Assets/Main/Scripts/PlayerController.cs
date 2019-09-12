@@ -8,24 +8,31 @@ namespace MattScripts {
 
         [Header("Physics Vars")]
         [Tooltip("How much force is applied to the player while moving?")]
-        [Range(1f, Mathf.Infinity)]
+        [Range(1f, 500f)]
         public float moveSpeed;
 
         [Tooltip("How much force is applied to the player when jumping?")]
-        [Range(1f, Mathf.Infinity)]
+        [Range(1f, 500f)]
         public float jumpPower;
 
         [Tooltip("How much downward force is applied to the player while in the air?")]
-        [Range(-100f, -1f)]
+        [Range(1, 10f)]
         public float gravityPower;
+        [Tooltip("The max speed the player can reach when being pulled downward force?")]
+        [Range(100f, 500f)]
+        public float maxGravityAcceleration;
 
         [Header("External Refs")]
         [Tooltip("A reference to the player ridgidbody")]
         public Rigidbody rb;
 
+        [Tooltip("References to all of the ground detection points the player used to detect for grounded")]
+        public GroundDetection[] detectionPoints;
+
         // Private variables
         private Vector3 movement = Vector3.zero;
         private bool isGrounded = true;
+        private float currGravityAcceleration = 0f;
 
         // Grabs player input
 		private void Update()
@@ -36,7 +43,7 @@ namespace MattScripts {
 		}
 
         // Applies the player input as controls
-		private void LateUpdate()
+		private void FixedUpdate()
 		{
             if(movement.y > 0f && isGrounded == true)
             {
@@ -47,28 +54,34 @@ namespace MattScripts {
             if(isGrounded == false)
             {
                 // Gravity Logic
-                rb.AddForce(0f, gravityPower,0f, ForceMode.Acceleration);
+                rb.AddForce(0f, currGravityAcceleration,0f, ForceMode.Acceleration);
+                if(Mathf.Abs(currGravityAcceleration) <= maxGravityAcceleration)
+                {
+                    currGravityAcceleration += -gravityPower;
+                }
             }
             // General Movement
             rb.AddForce(movement.x * moveSpeed * Time.fixedDeltaTime, 0f, movement.z * moveSpeed * Time.fixedDeltaTime,  ForceMode.Impulse);
 		}
 
-        // TODO: Make ground detection more accurate
-		private void OnCollisionStay(Collision collision)
+        // Performs the grounded check here
+		private void LateUpdate()
 		{
-            if(collision.gameObject.CompareTag("Ground"))
-            {
-                isGrounded = true;
-            }
+            isGrounded = CheckIfGrounded();
 		}
 
-        // TODO: Make ground detection more accurate
-		private void OnCollisionExit(Collision collision)
-		{
-            if(collision.gameObject.CompareTag("Ground"))
+		// Checks if any of the grounded points are colliding with the ground
+		private bool CheckIfGrounded()
+        {
+            foreach(GroundDetection point in detectionPoints)
             {
-                isGrounded = false;
+                if(point.IsTouchingGround == true)
+                {
+                    currGravityAcceleration = 0f;
+                    return true;
+                }
             }
-		}
+            return false;
+        }
 	}
 }
