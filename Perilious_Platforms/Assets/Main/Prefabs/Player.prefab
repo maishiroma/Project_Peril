@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4274605951049134}
   - component: {fileID: 54582265992408016}
+  - component: {fileID: 136073856718184988}
   - component: {fileID: 114617751345556542}
   m_Layer: 0
   m_Name: Player
@@ -76,10 +77,9 @@ GameObject:
   - component: {fileID: 4894680011348256}
   - component: {fileID: 33074132360318350}
   - component: {fileID: 23834944052401244}
-  - component: {fileID: 136776978624887120}
   m_Layer: 0
   m_Name: Player_Graphic
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -537,23 +537,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9cc54af6469b40d4a099fa7b6f15853, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isOut: 0
   moveSpeed: 70
   jumpPower: 60
   gravityPower: 3
   maxGravityAcceleration: 200
+  deathMoveSpeed: 400
   rb: {fileID: 54582265992408016}
   detectionPoints:
   - {fileID: 114316438723392868}
   - {fileID: 114377465392000152}
   - {fileID: 114131305172004880}
   - {fileID: 114471300344991936}
---- !u!136 &136776978624887120
+--- !u!136 &136073856718184988
 CapsuleCollider:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1779748866442530}
-  m_Material: {fileID: 0}
+  m_GameObject: {fileID: 1273649572801480}
+  m_Material: {fileID: 13400000, guid: f1c7c5cf4871241cab34247a19ce43c9, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
