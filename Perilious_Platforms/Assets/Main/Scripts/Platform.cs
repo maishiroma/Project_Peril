@@ -29,6 +29,9 @@ namespace MattScripts {
         [Tooltip("A reference to the platform's Rigidbody component")]
         public Rigidbody rb;
 
+        [Tooltip("A list of all objects that are on the platform")]
+        public List<Rigidbody> objsOnPlatform = new List<Rigidbody>();
+
         // Private Variables
         private PlatformState platformState = PlatformState.isRest;
         private float moveAcceleration = 0f;
@@ -61,7 +64,13 @@ namespace MattScripts {
                     }
                     else
                     {
-                        rb.AddForce(0f,moveAcceleration,0f, ForceMode.Acceleration);
+                        rb.AddForce(0f,moveAcceleration,0f, ForceMode.Impulse);
+                        foreach(Rigidbody currObj in objsOnPlatform)
+                        {
+                            // Makes the object move along with the platform in the Y direction
+                            currObj.AddForce(0f,moveAcceleration,0f, ForceMode.Impulse);
+                        }
+
                         if(Mathf.Abs(moveAcceleration) <= maxAcceleration)
                         {
                             moveAcceleration -= moveSpeed;
@@ -74,11 +83,17 @@ namespace MattScripts {
                         // Makes sure the platform is stopped immediatly
                         rb.velocity = Vector3.zero;
                         rb.angularVelocity = Vector3.zero;
+                        foreach(Rigidbody currObj in objsOnPlatform)
+                        {
+                            // Prevents the objects on the platform to jump off from stopping
+                            currObj.AddForce(0f,-moveAcceleration,0f, ForceMode.Impulse);
+                        }
+
                         platformState = PlatformState.isRest;
                     }
                     else
                     {
-                        rb.AddForce(0f,moveAcceleration,0f, ForceMode.Acceleration);
+                        rb.AddForce(0f,moveAcceleration,0f, ForceMode.Impulse);
                         if(Mathf.Abs(moveAcceleration) <= maxAcceleration)
                         {
                             moveAcceleration += moveSpeed;

@@ -126,7 +126,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   maxAcceleration: 10
-  yMin: 1
+  yMin: -5
   yMax: 2
   timeToRest: 2
   rb: {fileID: 54257289278456810}
+  objsOnPlatform: []
