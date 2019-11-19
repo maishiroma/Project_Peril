@@ -10,6 +10,9 @@ namespace MattScripts {
         [Range(0.1f,0.5f)]
         public float raycastLength = 0.1f;
 
+        [Tooltip("Who is associated with this detection point?")]
+        public Rigidbody parentObject;
+
         // Private variables
         private bool isTouchingGround;
 
@@ -18,7 +21,19 @@ namespace MattScripts {
             get { return isTouchingGround; }
         }
 
-        // If this point has entered ground, is it really valid?
+        // Once this object lands on a platform object, it gets associtated with that platform.
+		private void OnTriggerEnter(Collider other)
+		{
+            if(other.gameObject.CompareTag("Ground") && isTouchingGround == false)
+            {
+                if(Physics.Raycast(gameObject.transform.position, Vector3.down, raycastLength) && other.gameObject.GetComponent<Platform>() != null)
+                {
+                    other.gameObject.GetComponent<Platform>().objsOnPlatform.Add(parentObject);
+                }
+            }
+		}
+
+		// If this point has entered ground, is it really valid?
 		private void OnTriggerStay(Collider other)
 		{
             if(other.gameObject.CompareTag("Ground") && isTouchingGround == false)
@@ -38,6 +53,12 @@ namespace MattScripts {
                 if(!Physics.Raycast(gameObject.transform.position, Vector3.down, raycastLength))
                 {
                     isTouchingGround = false;
+
+                    if(other.gameObject.GetComponent<Platform>() != null)
+                    {
+                        // If we intentionally leave the platform, we are disassociated with the platform.
+                        other.gameObject.GetComponent<Platform>().objsOnPlatform.Remove(parentObject);
+                    }
                 }
             }
         }
