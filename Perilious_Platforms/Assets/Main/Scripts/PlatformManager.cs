@@ -23,6 +23,8 @@ namespace MattScripts {
         [Header("External References")]
         [Tooltip("Reference to the current player(s) in the level")]
         public PlayerController player;
+        [Tooltip("Reference to the UI manager in the level")]
+        public UIManager uIManager;
 
         //private variables
         private Platform[] arrayOfPlatforms;        // Reference to all of the platforms in the level
@@ -46,6 +48,7 @@ namespace MattScripts {
                 {
                     currentlyInRound = true;
                     roundNumber += 1;
+                    uIManager.UpdateRoundText("Round " + roundNumber.ToString());
 
                     // After X seconds, all but one platform will fall
                     Invoke("StartRound", platformPreFallTime);
@@ -64,6 +67,7 @@ namespace MattScripts {
                 {
                     StopRound();
                     currentlyInRound = false;
+                    uIManager.GameOverText("Too Bad...");
                 }
             }
 		}
