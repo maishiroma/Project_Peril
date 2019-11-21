@@ -38,8 +38,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1546300461283172}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5, y: 5, z: -1.2}
-  m_LocalScale: {x: 4.6505, y: 4.6505, z: 4.6505}
+  m_LocalPosition: {x: 7, y: 5, z: 0}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -127,7 +127,7 @@ MonoBehaviour:
   moveSpeed: 5
   maxAcceleration: 10
   yMin: -5
-  yMax: 2
-  timeToRest: 2
+  yMax: 5
+  timeToRest: 0.01
   rb: {fileID: 54257289278456810}
   objsOnPlatform: []
