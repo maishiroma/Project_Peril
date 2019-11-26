@@ -11,6 +11,7 @@ namespace MattScripts {
 		{
             if(other.gameObject.CompareTag("Player"))
             {
+                other.GetComponent<Rigidbody>().detectCollisions = false;
                 other.GetComponent<PlayerController>().DeathSequence();
             }
 		}

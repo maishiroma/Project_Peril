@@ -28,6 +28,8 @@ namespace MattScripts {
         [Header("External References")]
         [Tooltip("A reference to the platform's Rigidbody component")]
         public Rigidbody rb;
+        [Tooltip("What flag material does this platform correlate to?")]
+        public Material platformFlagMaterial;
 
         [Tooltip("A list of all objects that are on the platform")]
         public List<Rigidbody> objsOnPlatform = new List<Rigidbody>();
