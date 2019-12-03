@@ -23,6 +23,8 @@ namespace MattScripts {
         [Header("External References")]
         [Tooltip("Reference to the current player(s) in the level")]
         public PlayerController player;
+        [Tooltip("Reference to the UI manager in the level")]
+        public UIManager uIManager;
 
         //private variables
         private Platform[] arrayOfPlatforms;        // Reference to all of the platforms in the level
@@ -46,6 +48,10 @@ namespace MattScripts {
                 {
                     currentlyInRound = true;
                     roundNumber += 1;
+                    uIManager.UpdateRoundText("Round " + roundNumber.ToString());
+
+                    // We determine the safe platform
+                    DetermineSafePlatform();
 
                     // After X seconds, all but one platform will fall
                     Invoke("StartRound", platformPreFallTime);
@@ -62,8 +68,11 @@ namespace MattScripts {
                 // Once the player dies, all of the platforms stop moving.
                 if(!IsInvoking("StartRound") && currentlyInRound == true)
                 {
-                    StopRound();
                     currentlyInRound = false;
+
+                    StopRound();
+                    uIManager.GameOverText("Too Bad...");
+                    uIManager.ShowRetryButton();
                 }
             }
 		}
@@ -71,12 +80,6 @@ namespace MattScripts {
         // Starts the round up by having all but one platform fall
         private void StartRound()
         {
-            // We make sure we do not repeat safe platforms
-            while(prevIndex == safePlatformIndex)
-            {
-                safePlatformIndex = Random.Range(0, arrayOfPlatforms.Length);
-            }
-
             for(int currIndex = 0; currIndex < arrayOfPlatforms.Length; ++currIndex)
             {
                 if(roundNumber % roundIteratorSpeed == 0)
@@ -94,6 +97,9 @@ namespace MattScripts {
 
             // We then save the current index to check if we get duplicates
             prevIndex = safePlatformIndex;
+
+            // And hide the safe platform indicator
+            uIManager.HideSafePlatformIndicator();
         }
 
         // Checks if all of the platforms are reset
@@ -116,6 +122,18 @@ namespace MattScripts {
             {
                 currOne.StopMoving();
             }
+        }
+    
+        // We determine the safe platform and show it to the players
+        private void DetermineSafePlatform()
+        {
+            // We make sure we do not repeat safe platforms
+            while(prevIndex == safePlatformIndex)
+            {
+                safePlatformIndex = Random.Range(0, arrayOfPlatforms.Length);
+            }
+
+            uIManager.ShowSafePlatformIndicator(arrayOfPlatforms[safePlatformIndex].platformFlagMaterial);
         }
     }
 }
