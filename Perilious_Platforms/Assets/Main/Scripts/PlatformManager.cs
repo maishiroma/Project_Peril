@@ -72,7 +72,7 @@ namespace MattScripts {
 
                     StopRound();
                     uIManager.GameOverText("Too Bad...");
-                    uIManager.ShowRetryButton();
+                    uIManager.ShowGameOverButtons();
                 }
             }
 		}
