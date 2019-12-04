@@ -19,6 +19,9 @@ namespace MattScripts {
         [Tooltip("The Button used to reset the game")]
         [SerializeField]
         private Button retryButon;
+        [Tooltip("The Button used to return to the title screen")]
+        [SerializeField]
+        private Button returnToTitleButton;
         [Tooltip("Reference to UI Image that will show the platform color")]
         [SerializeField]
         private Image flagImage;
@@ -28,7 +31,7 @@ namespace MattScripts {
 		{
             UpdateRoundText("");
             GameOverText("");
-            HideRetryButton();
+            HideGameOverButtons();
             HideSafePlatformIndicator();
 		}
 
@@ -36,6 +39,12 @@ namespace MattScripts {
         public void ResetLevel()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        // Called in the returnToTitleButton click that takes the player to the title screen
+        public void ReturnToTitle()
+        {
+            SceneManager.LoadScene(0);
         }
 
         // Called externally to update the image material and show the safe plaform icon
@@ -63,16 +72,18 @@ namespace MattScripts {
             gameMessageText.text = text;
         }
     
-        // Called outside to show the retry button
-        public void ShowRetryButton() 
+        // Called outside to show the buttons from the GameOver screen
+        public void ShowGameOverButtons() 
         {
             retryButon.gameObject.SetActive(true);
+            returnToTitleButton.gameObject.SetActive(true);
         }
 
-        // Called outside to hide the retry button
-        public void HideRetryButton() 
+        // Called outside to hide the buttons from the GameOver screen
+        public void HideGameOverButtons() 
         {
             retryButon.gameObject.SetActive(false);
+            returnToTitleButton.gameObject.SetActive(false);
         }
     }
 }
